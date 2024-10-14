@@ -33,7 +33,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
                 email: true
             }
         })
-        console.log(userData);
+        console.log('userData', userData);
 
         if (userData) {
             const error = createHttpError(400, "User already exits with this email")
@@ -62,6 +62,8 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
                 userName,
             }
         })
+        console.log('newUser', newUser);
+
     } catch (error) {
         console.log('error while creating user  on DB : ', error)
         // res.status(500).json({
@@ -84,5 +86,53 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
 }
 
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+    const {email,password} = req.body
 
-export { createUser }
+    if(!email || !password){
+        const error = createHttpError(400,"All feilds are required")
+        return next(error)
+    }
+    // check user on db
+    // check password
+    // genrate token
+
+    let user 
+    try {
+        user = await prisma.user.findUnique({
+            where:{
+                email
+            },
+            select:{
+                name:true,
+                email:true,
+                password:true,
+                id:true
+            }
+        })
+        if(!user){
+            const error = "Enter correct email id"
+            return next(createHttpError(400,error))
+        }
+        // password check
+        const isPasswordCorrect = await bcrypt.compare(password,user.password)
+        if(!isPasswordCorrect){
+            const error = "Enter correct password" 
+            return next(createHttpError(400,error))
+        }
+        // genrate token
+        const token =  jwt.sign({isLogin:true, email:user.email,id:user.id}, config.jwtSecret as string , {expiresIn:'1d',algorithm:'HS256'})
+
+        res.status(200).json({
+            message: `User is loggin successfully with ${user?.email} email id.`,
+            token: token
+        })
+        
+
+    } catch (error) {
+        return next(createHttpError(500,'Unable to fetch user details.'))
+    }
+}
+
+
+export { createUser, loginUser }
