@@ -4,6 +4,7 @@ import jwt, { sign } from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
 import { config } from '../config/config'
 import createHttpError from 'http-errors'
+import { AuthRequest } from '../middlewares/authenticate'
 
 
 const prisma = new PrismaClient()
@@ -87,52 +88,66 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
-    const {email,password} = req.body
+    const { email, password } = req.body
 
-    if(!email || !password){
-        const error = createHttpError(400,"All feilds are required")
+    if (!email || !password) {
+        const error = createHttpError(400, "All feilds are required")
         return next(error)
     }
     // check user on db
     // check password
     // genrate token
 
-    let user 
+    let user
     try {
         user = await prisma.user.findUnique({
-            where:{
+            where: {
                 email
             },
-            select:{
-                name:true,
-                email:true,
-                password:true,
-                id:true
+            select: {
+                name: true,
+                email: true,
+                password: true,
+                id: true
             }
         })
-        if(!user){
+        if (!user) {
             const error = "Enter correct email id"
-            return next(createHttpError(400,error))
+            return next(createHttpError(400, error))
         }
         // password check
-        const isPasswordCorrect = await bcrypt.compare(password,user.password)
-        if(!isPasswordCorrect){
-            const error = "Enter correct password" 
-            return next(createHttpError(400,error))
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        if (!isPasswordCorrect) {
+            const error = "Enter correct password"
+            return next(createHttpError(400, error))
         }
         // genrate token
-        const token =  jwt.sign({isLogin:true, email:user.email,id:user.id}, config.jwtSecret as string , {expiresIn:'1d',algorithm:'HS256'})
+        const token = jwt.sign({ isLogin: true, email: user.email, userId: user.id }, config.jwtSecret as string, { expiresIn: '1d', algorithm: 'HS256' })
 
         res.status(200).json({
             message: `User is loggin successfully with ${user?.email} email id.`,
             token: token
         })
-        
+
 
     } catch (error) {
-        return next(createHttpError(500,'Unable to fetch user details.'))
+        return next(createHttpError(500, 'Unable to fetch user details.'))
     }
 }
 
+const test = async (req: Request, res: Response, next: NextFunction) => {
+    // const {email,userId}= req.body
+    // const token = req.header
+    const _req = req as AuthRequest
+    console.log("_req",_req.userId);
+    console.log("_req",_req.email);
+    console.log("_req",_req.isLogin);
+    
 
-export { createUser, loginUser }
+    console.log("REQ : ",req.body);
+    
+    res.status(200).json({ message: "This test route" })
+}
+
+
+export { createUser, loginUser, test }

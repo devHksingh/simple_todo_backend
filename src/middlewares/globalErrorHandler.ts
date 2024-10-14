@@ -13,20 +13,6 @@ function globalErrorHandler(err: HttpError, req: Request, res: Response, next: N
       });
 }
 
-// const globalErrorHandler = (
-//     err: HttpError, 
-//     req: Request, 
-//     res: Response, 
-//     next: NextFunction
-//   ) => {
-//     const statusCode = err.statusCode || 500
-
-//    res.status(statusCode).json({
-//     success: false,
-//     message: err.message,
-//     errorStack: config.env === 'development' ? err.stack : '',
-//   });
-// }
 
 
 export default globalErrorHandler
