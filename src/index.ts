@@ -3,6 +3,7 @@ import { config } from './config/config';
 import cors from 'cors'
 import userRouter from './user/userRoute'
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import todoRoute from './posts/postRoute';
 // import globalErrorHandler from './middlewares/globalErrorHandler';
 const app = express()
 
@@ -27,6 +28,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 // router
 
 app.use('/api/users', userRouter)
+app.use('/api/todo', todoRoute)
 
 //  Global error handler
 app.use(globalErrorHandler)
