@@ -86,6 +86,7 @@ const singleUserGetAllTodo = async (req: Request, res: Response, next: NextFunct
 
     // }
 
+    // below qurrey for all todo by user 
     try {
         allTodos = await prisma.user.findUnique({
             where: {
@@ -100,30 +101,53 @@ const singleUserGetAllTodo = async (req: Request, res: Response, next: NextFunct
         console.log("error");
 
     }
-    let todo
+    // let todo
 
-    try {
-        todo = await prisma.todo.findMany({
-            where: {
-                userEmail: userEmail
-            }
-        })
+    // try {
+    //     todo = await prisma.todo.findMany({
+    //         where: {
+    //             userEmail: userEmail
+    //         }
+    //     })
 
-    } catch (error) {
-        console.log("err");
+    // } catch (error) {
+    //     console.log("err");
 
-    }
-    if (allTodos && todo) {
+    // }
+    if (allTodos) {
         console.log("allTodos", allTodos);
-        console.log("todo", todo);
+        console.log("todo");
 
         res.status(200).json({
-            todo: todo,
+            // todo: todo,
             allTodos: allTodos
         })
 
 
     }
 }
+const singleTodo = async (req: Request, res: Response, next: NextFunction) => {
+    const { todoId } = req.body
+    const _req = req as AuthRequest
+    const userEmail = _req.email
 
-export { createTodo, getAllTodo, singleUserGetAllTodo }
+    let todo
+    try {
+        todo = await prisma.todo.findUnique({
+            where: {
+                userEmail: userEmail,
+                id: todoId
+            }
+        })
+        if (todo) {
+            console.log("single todo :", todo);
+            res.status(200).json({
+                singleTodo: todo
+            })
+        }
+    } catch (error) {
+
+    }
+}
+
+export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo }
