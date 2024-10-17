@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import createHttpError from 'http-errors'
 
 
+
 const prisma = new PrismaClient()
 const createTodo = async (req: Request, res: Response, next: NextFunction) => {
     const _req = req as AuthRequest
@@ -23,8 +24,8 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
                 createdAt: true,
                 title: true,
                 content: true,
-                
-                userEmail:true
+
+                userEmail: true
             }
         })
         if (newTodo) {
@@ -41,5 +42,25 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const getAllTodo = async (req: Request, res: Response, next: NextFunction) => {
+    console.log("***************getAllTodo *********");
+    
+    let allTodos
+    try {
+        allTodos = await prisma.todo.findMany()
+        if (allTodos) {
+            console.log("allTodos", allTodos);
+            res.status(200).json({
+                message: "Fecthed all todos",
+                todo: allTodos
+            })
 
-export { createTodo }
+        }
+    } catch (error) {
+        console.log("Error occured while getting all todos");
+        return next(createHttpError(500, "Error occured while getting all todos"))
+
+    }
+}
+
+export { createTodo, getAllTodo }
