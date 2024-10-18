@@ -150,4 +150,24 @@ const singleTodo = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo }
+const singleTodoFromPrams = async (req: Request, res: Response, next: NextFunction) => {
+    const todoId = req.params.id
+    let todo
+    try {
+        todo = await prisma.todo.findUnique({
+            where: {
+                id: Number(todoId)
+            }
+        })
+        if (todo) {
+            console.log("todo", todo)
+            res.status(200).json({
+                todo: todo
+            })
+        }
+    } catch (error) {
+
+    }
+}
+
+export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo, singleTodoFromPrams }
