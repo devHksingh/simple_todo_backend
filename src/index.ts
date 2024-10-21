@@ -13,6 +13,8 @@ app.use(
     })
 )
 
+// app.use(cors())
+
 const port = config.port || 3000
 
 console.log(config.port);
