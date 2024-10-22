@@ -139,15 +139,43 @@ const test = async (req: Request, res: Response, next: NextFunction) => {
     // const {email,userId}= req.body
     // const token = req.header
     const _req = req as AuthRequest
-    console.log("_req",_req.userId);
-    console.log("_req",_req.email);
-    console.log("_req",_req.isLogin);
-    
+    console.log("_req", _req.userId);
+    console.log("_req", _req.email);
+    console.log("_req", _req.isLogin);
 
-    console.log("REQ : ",req.body);
-    
+
+    console.log("REQ : ", req.body);
+
     res.status(200).json({ message: "This test route" })
 }
 
+const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+    const _req = req as AuthRequest
+    const userEmail = _req.email
+    const userId = _req.userId
+    let user
+    try {
+        user = await prisma.user.findUnique({
+            where: {
+                email: userEmail
+            },
+            select: {
+                name: true,
+                email: true,
+                userName: true,
+                todo: true,
+                id: true
+            }
+        })
+        if (user) {
+            res.status(200).json({
+                profile: user
+            })
+        }
+    } catch (error) {
+        return next(createHttpError(500, 'Error while geting user profile'))
+    }
+}
 
-export { createUser, loginUser, test }
+
+export { createUser, loginUser, test, getUserProfile }
