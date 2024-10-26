@@ -178,7 +178,10 @@ const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
     console.log(todo.ids);
     console.log(typeof (todo));
     console.log(req.body);
-    
+    // Validate if todoIds is an array and not empty
+    if (!Array.isArray(todo.ids) || todo.ids.length === 0) {
+        return next(createHttpError(400, "Invalid or empty list of IDs"));
+    }
 
     try {
         const response = await prisma.todo.deleteMany({
@@ -189,10 +192,19 @@ const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
                 }
             }
         })
-        if (response) {
+        // if (response) {
+        //     res.status(200).json({
+        //         message: `Todo is deleted sucessfully `,
+        //         response
+        //     })
+        // }
+        if(response.count > 0){
             res.status(200).json({
-                message: `Todo is deleted sucessfully `,
-                response
+                message:`${response.count} Todo(s) deleted successfully`
+            })
+        }else{
+            res.status(404).json({
+                message:"No todo found to delete"
             })
         }
     } catch (error) {
