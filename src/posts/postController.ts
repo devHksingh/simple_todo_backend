@@ -170,4 +170,28 @@ const singleTodoFromPrams = async (req: Request, res: Response, next: NextFuncti
     }
 }
 
-export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo, singleTodoFromPrams }
+const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
+    const _req = req as AuthRequest
+    const userEmail = _req.email
+
+    const { todoId } = req.body
+
+    try {
+        const response = await prisma.todo.delete({
+            where: {
+                userEmail: userEmail,
+                id: todoId
+            }
+        })
+        if (response) {
+            res.status(200).json({
+                message: `Todo is deleted sucessfully `,
+                response
+            })
+        }
+    } catch (error) {
+        return next(createHttpError(500, "Unable to delete the todo"))
+    }
+}
+
+export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo, singleTodoFromPrams, deleteTodo }
