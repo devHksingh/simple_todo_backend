@@ -174,13 +174,19 @@ const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
     const _req = req as AuthRequest
     const userEmail = _req.email
 
-    const { todoId } = req.body
+    const todo = req.body
+    console.log(todo.ids);
+    console.log(typeof (todo));
+    console.log(req.body);
+    
 
     try {
-        const response = await prisma.todo.delete({
+        const response = await prisma.todo.deleteMany({
             where: {
-                userEmail: userEmail,
-                id: todoId
+                userEmail,
+                id: {
+                    in: todo.ids
+                }
             }
         })
         if (response) {
