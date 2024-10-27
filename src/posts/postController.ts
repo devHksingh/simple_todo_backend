@@ -198,18 +198,47 @@ const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
         //         response
         //     })
         // }
-        if(response.count > 0){
+        if (response.count > 0) {
             res.status(200).json({
-                message:`${response.count} Todo(s) deleted successfully`
+                message: `${response.count} Todo(s) deleted successfully`
             })
-        }else{
+        } else {
             res.status(404).json({
-                message:"No todo found to delete"
+                message: "No todo found to delete"
             })
         }
     } catch (error) {
         return next(createHttpError(500, "Unable to delete the todo"))
     }
 }
+const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
+    const _req = req as AuthRequest
+    const userEmail = _req.email
+    const { id, title, content } = req.body
+    // update todo with id 
+    if (id && typeof (id) === "number") {
 
-export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo, singleTodoFromPrams, deleteTodo }
+    }
+    try {
+        const response = await prisma.todo.update({
+            where: {
+                userEmail,
+                id: id
+            },
+            data: {
+                title,
+                content
+            }
+        })
+        if (response) {
+            res.status(200).json({
+                message: "Todo is updated successfully",
+                response
+            })
+        }
+    } catch (error) {
+        return next(createHttpError(500, 'unable to update todo'))
+    }
+}
+
+export { createTodo, getAllTodo, singleUserGetAllTodo, singleTodo, singleTodoFromPrams, deleteTodo, updateTodo }
