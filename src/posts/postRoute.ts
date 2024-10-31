@@ -10,8 +10,8 @@ todoRoute.get('/allTodos', getAllTodo)
 todoRoute.get('/usersTodo', authenticate, singleUserGetAllTodo)
 todoRoute.get('/singleTodo', authenticate, singleTodo)
 todoRoute.get('/:id', singleTodoFromPrams)
-todoRoute.delete('/delete', deleteTodo)
-todoRoute.patch('/update', updateTodo)
+todoRoute.delete('/delete', authenticate, deleteTodo)
+todoRoute.patch('/update', authenticate, updateTodo)
 
 
 export default todoRoute
