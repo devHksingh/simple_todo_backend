@@ -9,7 +9,7 @@ todoRoute.post('/createTodo', authenticate, createTodo)
 todoRoute.get('/allTodos', getAllTodo)
 todoRoute.get('/usersTodo', authenticate, singleUserGetAllTodo)
 todoRoute.get('/singleTodo', authenticate, singleTodo)
-todoRoute.get('/:id', singleTodoFromPrams)
+todoRoute.get('/:id', authenticate, singleTodoFromPrams)
 todoRoute.delete('/delete', authenticate, deleteTodo)
 todoRoute.patch('/update', authenticate, updateTodo)
 
