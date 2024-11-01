@@ -130,17 +130,19 @@ const singleTodo = async (req: Request, res: Response, next: NextFunction) => {
     const { todoId } = req.body
     const _req = req as AuthRequest
     const userEmail = _req.email
-
+    const id = Number(todoId)
+    console.log("SINGLE TODO : ",typeof(todoId),userEmail);
+    
     let todo
     try {
         todo = await prisma.todo.findUnique({
             where: {
                 userEmail: userEmail,
-                id: todoId
+                id: id
             }
         })
         if (todo) {
-            console.log("single todo :", todo);
+            console.log("single todo Res :", todo);
             res.status(200).json({
                 singleTodo: todo
             })
