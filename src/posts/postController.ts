@@ -218,42 +218,49 @@ const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
     const userEmail = _req.email
     const { id, title, content } = req.body
     console.log(typeof (id));
+    console.log("#########################################");
+    console.log("id, title, content :",id, title, content);
+    
+    
     // update todo with id 
     /*
     * check id is valid or not 
     * check 1.title present? 2.content present? or both present.
     */
 
-    if (title) {
+    // if (title) {
+    //     // check if id is present or not
+    //     if (id && typeof (id) === "number") {
+    //         try {
+    //             const response = await prisma.todo.update({
+    //                 where: {
+    //                     userEmail,
+    //                     id: id
+    //                 },
+    //                 data: {
+    //                     title
+
+    //                 }
+    //             })
+    //             if (response) {
+    //                 res.status(200).json({
+    //                     message: "Todo is updated successfully",
+    //                     response
+    //                 })
+    //             }
+    //         } catch (error) {
+    //             return next(createHttpError(500, 'unable to update todo'))
+    //         }
+
+    //     } else {
+    //         return next(createHttpError(401, "Invalid todo id."))
+    //     }
+    // } 
+    if (title && content) {
         // check if id is present or not
         if (id && typeof (id) === "number") {
-            try {
-                const response = await prisma.todo.update({
-                    where: {
-                        userEmail,
-                        id: id
-                    },
-                    data: {
-                        title
-
-                    }
-                })
-                if (response) {
-                    res.status(200).json({
-                        message: "Todo is updated successfully",
-                        response
-                    })
-                }
-            } catch (error) {
-                return next(createHttpError(500, 'unable to update todo'))
-            }
-
-        } else {
-            return next(createHttpError(401, "Invalid todo id."))
-        }
-    } else if (title && content) {
-        // check if id is present or not
-        if (id && typeof (id) === "number") {
+            console.log("both are present ",id, title, content);
+            
             try {
                 const response = await prisma.todo.update({
                     where: {
@@ -279,32 +286,33 @@ const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
             return next(createHttpError(401, "Invalid todo id."))
         }
     } else {
+        return next(createHttpError(401, "Title and content are requried."))
         // check if id is present or not
-        if (id && typeof (id) === "number") {
-            try {
-                const response = await prisma.todo.update({
-                    where: {
-                        userEmail,
-                        id: id
-                    },
-                    data: {
+        // if (id && typeof (id) === "number") {
+        //     try {
+        //         const response = await prisma.todo.update({
+        //             where: {
+        //                 userEmail,
+        //                 id: id
+        //             },
+        //             data: {
 
-                        content
-                    }
-                })
-                if (response) {
-                    res.status(200).json({
-                        message: "Todo is updated successfully",
-                        response
-                    })
-                }
-            } catch (error) {
-                return next(createHttpError(500, 'unable to update todo'))
-            }
+        //                 content
+        //             }
+        //         })
+        //         if (response) {
+        //             res.status(200).json({
+        //                 message: "Todo is updated successfully",
+        //                 response
+        //             })
+        //         }
+        //     } catch (error) {
+        //         return next(createHttpError(500, 'unable to update todo'))
+        //     }
 
-        } else {
-            return next(createHttpError(401, "Invalid todo id."))
-        }
+        // } else {
+        //     return next(createHttpError(401, "Invalid todo id."))
+        // }
     }
 
 }
