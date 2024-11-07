@@ -13,6 +13,8 @@ app.use(
     })
 )
 
+console.log("frontendDomain",config.frontendDomain);
+
 // app.use(cors())
 
 const port = config.port || 3000
