@@ -30,7 +30,7 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
             }
         })
         if (newTodo) {
-            console.log('newTodo', newTodo);
+            // console.log('newTodo', newTodo);
             res.status(200).json({
                 message: "Todo is created successfully",
                 success: true,
@@ -38,19 +38,19 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
             })
         }
     } catch (error) {
-        console.log('error while creating todo  on DB : ', error)
+        // console.log('error while creating todo  on DB : ', error)
         return next(createHttpError(500, 'error while creating todo'))
     }
 }
 
 const getAllTodo = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("***************getAllTodo *********");
+    // console.log("***************getAllTodo *********");
 
     let allTodos
     try {
         allTodos = await prisma.todo.findMany()
         if (allTodos) {
-            console.log("allTodos", allTodos);
+            // console.log("allTodos", allTodos);
             res.status(200).json({
                 message: "Fecthed all todos",
                 todo: allTodos
@@ -58,7 +58,7 @@ const getAllTodo = async (req: Request, res: Response, next: NextFunction) => {
 
         }
     } catch (error) {
-        console.log("Error occured while getting all todos");
+        // console.log("Error occured while getting all todos");
         return next(createHttpError(500, "Error occured while getting all todos"))
 
     }
@@ -115,8 +115,8 @@ const singleUserGetAllTodo = async (req: Request, res: Response, next: NextFunct
 
     // }
     if (allTodos) {
-        console.log("allTodos", allTodos);
-        console.log("todo");
+        // console.log("allTodos", allTodos);
+        // console.log("todo");
 
         res.status(200).json({
             // todo: todo,
@@ -131,7 +131,7 @@ const singleTodo = async (req: Request, res: Response, next: NextFunction) => {
     const _req = req as AuthRequest
     const userEmail = _req.email
     const id = Number(todoId)
-    console.log("SINGLE TODO : ",typeof(todoId),userEmail);
+    // console.log("SINGLE TODO : ",typeof(todoId),userEmail);
     
     let todo
     try {
@@ -142,7 +142,7 @@ const singleTodo = async (req: Request, res: Response, next: NextFunction) => {
             }
         })
         if (todo) {
-            console.log("single todo Res :", todo);
+            // console.log("single todo Res :", todo);
             res.status(200).json({
                 singleTodo: todo
             })
@@ -162,7 +162,7 @@ const singleTodoFromPrams = async (req: Request, res: Response, next: NextFuncti
             }
         })
         if (todo) {
-            console.log("todo", todo)
+            // console.log("todo", todo)
             res.status(200).json({
                 todo: todo
             })
@@ -177,9 +177,9 @@ const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
     const userEmail = _req.email
 
     const todo = req.body
-    console.log(todo.ids);
-    console.log(typeof (todo));
-    console.log(req.body);
+    // console.log(todo.ids);
+    // console.log(typeof (todo));
+    // console.log(req.body);
     // Validate if todoIds is an array and not empty
     if (!Array.isArray(todo.ids) || todo.ids.length === 0) {
         return next(createHttpError(400, "Invalid or empty list of IDs"));
@@ -217,9 +217,9 @@ const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
     const _req = req as AuthRequest
     const userEmail = _req.email
     const { id, title, content } = req.body
-    console.log(typeof (id));
-    console.log("#########################################");
-    console.log("id, title, content :",id, title, content);
+    // console.log(typeof (id));
+    // console.log("#########################################");
+    // console.log("id, title, content :",id, title, content);
     
     
     // update todo with id 
@@ -259,7 +259,7 @@ const updateTodo = async (req: Request, res: Response, next: NextFunction) => {
     if (title && content) {
         // check if id is present or not
         if (id && typeof (id) === "number") {
-            console.log("both are present ",id, title, content);
+            // console.log("both are present ",id, title, content);
             
             try {
                 const response = await prisma.todo.update({

@@ -34,7 +34,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
                 email: true
             }
         })
-        console.log('userData', userData);
+        // console.log('userData', userData);
 
         if (userData) {
             const error = createHttpError(400, "User already exits with this email")
@@ -42,7 +42,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
         }
 
     } catch (error) {
-        console.log('error while fetching user detail on cerateUser : ', error)
+        // console.log('error while fetching user detail on cerateUser : ', error)
         //  res.status(500).json({
         //     message: 'error while fetching user detail on cerateUser'
         // })
@@ -63,10 +63,10 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
                 userName,
             }
         })
-        console.log('newUser', newUser);
+        // console.log('newUser', newUser);
 
     } catch (error) {
-        console.log('error while creating user  on DB : ', error)
+        // console.log('error while creating user  on DB : ', error)
         // res.status(500).json({
         //     message: 'error while creating user  on DB'
         // })
@@ -139,12 +139,12 @@ const test = async (req: Request, res: Response, next: NextFunction) => {
     // const {email,userId}= req.body
     // const token = req.header
     const _req = req as AuthRequest
-    console.log("_req", _req.userId);
-    console.log("_req", _req.email);
-    console.log("_req", _req.isLogin);
+    // console.log("_req", _req.userId);
+    // console.log("_req", _req.email);
+    // console.log("_req", _req.isLogin);
 
 
-    console.log("REQ : ", req.body);
+    // console.log("REQ : ", req.body);
 
     res.status(200).json({ message: "This test route" })
 }

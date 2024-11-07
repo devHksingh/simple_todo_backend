@@ -28,9 +28,9 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
         const decodedToken = jwt.verify(jwtToken, config.jwtSecret as string) as JwtPayload
 
         const {isLogin,email,userId}:any =decodedToken.valueOf()
-        console.log("decodedToken",decodedToken);
-        console.log("decodedToken",decodedToken.valueOf());
-        console.log("isLogin,email,userId",isLogin,email,userId);
+        // console.log("decodedToken",decodedToken);
+        // console.log("decodedToken",decodedToken.valueOf());
+        // console.log("isLogin,email,userId",isLogin,email,userId);
         
         const _req = req as AuthRequest
         

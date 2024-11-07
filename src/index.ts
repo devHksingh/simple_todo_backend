@@ -17,7 +17,7 @@ app.use(
 
 const port = config.port || 3000
 
-console.log(config.port);
+// console.log(config.port);
 
 
 app.use(express.json())
