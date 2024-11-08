@@ -13,9 +13,9 @@ const app = express()
 //     })
 // )
 
-console.log("frontendDomain",config.frontendDomain);
-
 app.use(cors())
+
+console.log("frontendDomain",config.frontendDomain);
 
 const port = config.port || 3000
 
