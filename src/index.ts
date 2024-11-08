@@ -6,6 +6,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import todoRoute from './posts/postRoute';
 // import globalErrorHandler from './middlewares/globalErrorHandler';
 const app = express()
+app.options('*', cors())
 
 // app.use(
 //     cors({
