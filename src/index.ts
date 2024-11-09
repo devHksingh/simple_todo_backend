@@ -6,14 +6,14 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import todoRoute from './posts/postRoute';
 // import globalErrorHandler from './middlewares/globalErrorHandler';
 const app = express()
-app.use(cors())
-app.options('*', cors())
+// app.use(cors())
+// app.options('*', cors())
 
-// app.use(
-//     cors({
-//         origin: config.frontendDomain
-//     })
-// )
+app.use(
+    cors({
+        origin: config.frontendDomain
+    })
+)
 
 
 console.log("frontendDomain",config.frontendDomain);
